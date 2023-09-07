@@ -62,6 +62,7 @@ You are an intelligent programming assistant.
   "Llama code task prompt."
   :type 'string)
 
+;;;###autoload
 (defun llama-code-region-task (start end question)
   "Ask the llama to perform a task within the specified region.
 The task is defined by the text in the current buffer between START and END.

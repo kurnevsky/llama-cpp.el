@@ -98,6 +98,7 @@ PROC and DATA are the filter params."
                   (let ((json (json-parse-string (substring s (match-beginning 1) (match-end 1)) :object-type 'plist)))
                     (funcall callback (plist-get json :content))))))))))))
 
+;;;###autoload
 (defun llama-complete (prompt callback)
   "Complete the PROMPT using llama-cpp server.
 CALLBACK is called multiple times after a new token generated.
