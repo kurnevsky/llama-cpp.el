@@ -34,7 +34,7 @@
   "Llama-cpp client."
   :group 'tools)
 
-(defcustom llama-host "pc"
+(defcustom llama-host "localhost"
   "Host of the llama-cpp server."
   :type 'string
   :group 'llama)
