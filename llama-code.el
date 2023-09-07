@@ -42,12 +42,6 @@
            (string "Language name")))
   :group 'llama)
 
-(defun llama-code-lang-to-mode (mode)
-  "Return text language for a major MODE."
-  (or
-   (alist-get mode llama-code-lang-modes)
-   (string-remove-suffix "-mode" (string-remove-suffix "-ts-mode" (symbol-name mode)))))
-
 (defcustom llama-code-region-prompt "### System Prompt
 You are an intelligent programming assistant.
 
@@ -62,6 +56,14 @@ You are an intelligent programming assistant.
   "Llama code task prompt."
   :type 'string)
 
+(defconst llama-code--buffer-name "*llama*")
+
+(defun llama-code-lang-to-mode (mode)
+  "Return text language for a major MODE."
+  (or
+   (alist-get mode llama-code-lang-modes)
+   (string-remove-suffix "-mode" (string-remove-suffix "-ts-mode" (symbol-name mode)))))
+
 ;;;###autoload
 (defun llama-code-region-task (start end question)
   "Ask the llama to perform a task within the specified region.
@@ -69,14 +71,21 @@ The task is defined by the text in the current buffer between START and END.
 The QUESTION argument is a string asking for clarification or more information
 about the task."
   (interactive "r\nsDescribe your task: ")
+  (with-current-buffer (get-buffer-create llama-code--buffer-name)
+    (setq-local buffer-read-only t)
+    (let ((inhibit-read-only t))
+      (erase-buffer)))
+  (display-buffer llama-code--buffer-name)
   (llama-complete (format llama-code-region-prompt
                           question
                           (llama-code-lang-to-mode major-mode)
                           (buffer-substring-no-properties start end))
                   (lambda (token)
-                    (with-current-buffer (get-buffer-create "*llama*")
-                      (goto-char (point-max))
-                      (insert token)))))
+                    (with-current-buffer (get-buffer-create llama-code--buffer-name)
+                      (save-excursion
+                        (goto-char (point-max))
+                        (let ((inhibit-read-only t))
+                          (insert token)))))))
 
 (provide 'llama-code)
 ;;; llama-code.el ends here
