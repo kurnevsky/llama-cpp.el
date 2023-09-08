@@ -66,11 +66,15 @@ You are an intelligent programming assistant.
 
 (defun llama-chat-insert-input-prefix ()
   "Insert the input prefix at point."
-  (insert (propertize llama-chat-input-prefix 'face 'llama-chat-input-prefix-face)))
+  (insert (propertize llama-chat-input-prefix 'face 'llama-chat-input-prefix-face))
+  (unless (string-empty-p llama-chat-input-prefix)
+    (set-text-properties (1- (point)) (point) nil)))
 
 (defun llama-chat-insert-input-suffix ()
   "Insert the input suffix at point."
-  (insert (propertize llama-chat-input-suffix 'face 'llama-chat-input-suffix-face)))
+  (insert (propertize llama-chat-input-suffix 'face 'llama-chat-input-suffix-face))
+  (unless (string-empty-p llama-chat-input-suffix)
+    (set-text-properties (1- (point)) (point) nil)))
 
 (defun llama-chat-start ()
   "Start llama chat."
