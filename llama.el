@@ -41,7 +41,7 @@
 
 (defconst llama--process "llama")
 (defconst llama--process-buffer " *llama-output*")
-(defconst llama--rx (rx bol "data: " (group (+ nonl)) eol))
+(defconst llama--rx (rx bol "data: " (group (+ nonl)) eol "\n"))
 
 (defvar-local llama--start 0)
 
