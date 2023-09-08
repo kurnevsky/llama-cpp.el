@@ -44,11 +44,11 @@
   :group 'llama)
 
 (defcustom llama-chat-prompt "### System Prompt
-You are an intelligent programming assistant.
-"
+You are an intelligent programming assistant."
   "Llama prompt to start chat with.")
 
 (defcustom llama-chat-input-prefix "
+
 ### User Message
 "
   "String to prefix user inputs with.")
@@ -77,7 +77,11 @@ You are an intelligent programming assistant.
     (set-text-properties (1- (point)) (point) nil)))
 
 (defun llama-chat-start ()
-  "Start llama chat."
+  "Start a Llama chat session.
+
+This interactive function creates and displays a new buffer for a Llama chat
+session.  A prompt message for the Llama chat and an input prefix are inserted
+into the buffer."
   (interactive)
   (with-current-buffer (get-buffer-create llama-chat--buffer-name)
     (erase-buffer)
@@ -89,11 +93,13 @@ You are an intelligent programming assistant.
   "Complete text from llama buffer."
   (interactive)
   (with-current-buffer (get-buffer-create llama-chat--buffer-name)
-    (llama-complete (buffer-string) (lambda (token)
+    (llama-complete (buffer-string) (lambda (token stop)
                                       (with-current-buffer (get-buffer-create llama-chat--buffer-name)
                                         (save-excursion
                                           (goto-char (point-max))
-                                          (insert token)))))))
+                                          (insert token)
+                                          (when stop
+                                            (llama-chat-insert-input-prefix))))))))
 
 (provide 'llama-chat)
 ;;; llama-chat.el ends here

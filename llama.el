@@ -96,7 +96,9 @@ PROC and DATA are the filter params."
                 (while (string-match llama--rx s llama--start)
                   (setq llama--start (1+ (match-end 0)))
                   (let ((json (json-parse-string (substring s (match-beginning 1) (match-end 1)) :object-type 'plist)))
-                    (funcall callback (plist-get json :content))))))))))))
+                    (funcall callback
+                             (plist-get json :content)
+                             (eq (plist-get json :stop) t))))))))))))
 
 ;;;###autoload
 (defun llama-complete (prompt callback)
