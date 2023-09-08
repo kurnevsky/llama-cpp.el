@@ -72,21 +72,19 @@ The task is defined by the text in the current buffer between START and END.
 The QUESTION argument is a string asking for clarification or more information
 about the task."
   (interactive "r\nsDescribe your task: ")
-  (with-current-buffer (get-buffer-create llama-code--buffer-name)
-    (setq-local buffer-read-only t)
-    (let ((inhibit-read-only t))
-      (erase-buffer)))
-  (display-buffer llama-code--buffer-name)
-  (llama-complete (format llama-code-region-prompt
-                          question
-                          (llama-code-lang-to-mode major-mode)
-                          (buffer-substring-no-properties start end))
-                  (lambda (token)
-                    (with-current-buffer (get-buffer-create llama-code--buffer-name)
-                      (save-excursion
-                        (goto-char (point-max))
-                        (let ((inhibit-read-only t))
-                          (insert token)))))))
+  (let ((prompt (format llama-code-region-prompt
+                        question
+                        (llama-code-lang-to-mode major-mode)
+                        (buffer-substring-no-properties start end))))
+    (with-current-buffer (get-buffer-create llama-code--buffer-name)
+      (erase-buffer)
+      (insert prompt))
+    (display-buffer llama-code--buffer-name)
+    (llama-complete prompt (lambda (token)
+                             (with-current-buffer (get-buffer-create llama-code--buffer-name)
+                               (save-excursion
+                                 (goto-char (point-max))
+                                 (insert token)))))))
 
 (provide 'llama-code)
 ;;; llama-code.el ends here
