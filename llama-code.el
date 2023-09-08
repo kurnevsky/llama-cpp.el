@@ -27,6 +27,7 @@
 ;;; Code:
 
 (require 'llama)
+(require 'llama-chat)
 
 (defcustom llama-code-lang-modes
   '((tuareg-mode . "ocaml")
@@ -42,22 +43,13 @@
            (string "Language name")))
   :group 'llama)
 
-(defcustom llama-code-region-prompt "### System Prompt
-You are an intelligent programming assistant.
-
-### User Message
-%s
+(defcustom llama-code-region-prompt "%s
 ```%s
 %s
 ```
-
-### Assistant
-
 "
   "Llama code task prompt."
   :type 'string)
-
-(defconst llama-code--buffer-name "*llama*")
 
 (defun llama-code-lang-to-mode (mode)
   "Return text language for a major MODE."
@@ -72,19 +64,15 @@ The task is defined by the text in the current buffer between START and END.
 The QUESTION argument is a string asking for clarification or more information
 about the task."
   (interactive "r\nsDescribe your task: ")
+  (llama-chat-start)
   (let ((prompt (format llama-code-region-prompt
                         question
                         (llama-code-lang-to-mode major-mode)
                         (buffer-substring-no-properties start end))))
-    (with-current-buffer (get-buffer-create llama-code--buffer-name)
-      (erase-buffer)
-      (insert prompt))
-    (display-buffer llama-code--buffer-name)
-    (llama-complete prompt (lambda (token)
-                             (with-current-buffer (get-buffer-create llama-code--buffer-name)
-                               (save-excursion
-                                 (goto-char (point-max))
-                                 (insert token)))))))
+    (with-current-buffer (get-buffer-create llama-chat--buffer-name)
+      (insert prompt)
+      (llama-chat-insert-input-suffix)))
+  (llama-chat-complete))
 
 (provide 'llama-code)
 ;;; llama-code.el ends here
