@@ -48,7 +48,8 @@ You are an intelligent programming assistant.
 ### User Message
 %s
 ```%s
-%s```
+%s
+```
 
 ### Assistant
 
