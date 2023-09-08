@@ -76,6 +76,7 @@ You are an intelligent programming assistant."
   (unless (string-empty-p llama-chat-input-suffix)
     (set-text-properties (1- (point)) (point) nil)))
 
+;;;###autoload
 (defun llama-chat-start ()
   "Start a Llama chat session.
 

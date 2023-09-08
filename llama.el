@@ -39,16 +39,22 @@
   :type 'string
   :group 'llama)
 
+(defcustom llama-port 8080
+  "Port of the llama-cpp server."
+  :type 'natnum
+  :group 'llama)
+
+(defcustom llama-params '(:n_predict -1 :mirostat 2)
+  "Parameters for the llama /completion request."
+  :type '(alist :key-type (symbol :tag "Parameter")
+                :value-type (sexp :tag "Value"))
+  :group 'llama)
+
 (defconst llama--process "llama")
 (defconst llama--process-buffer " *llama-output*")
 (defconst llama--rx (rx bol "data: " (group (+ nonl)) eol "\n"))
 
 (defvar-local llama--start 0)
-
-(defcustom llama-port 8080
-  "Port of the llama-cpp server."
-  :type 'natnum
-  :group 'llama)
 
 (defun llama-cancel ()
   "Cancel the running llama process.
@@ -76,7 +82,7 @@ It will terminate TCP connection and stop server computations."
         (url-http-target-url (url-generic-parse-url (llama--completion-url)))
         (url-http-referer nil)
         (url-http-extra-headers `(("Content-Type" . "application/json")))
-        (url-http-data (json-serialize `(:prompt ,prompt :n_predict 2500 :stream t))))
+        (url-http-data (json-serialize (append `(:prompt ,prompt :stream t) llama-params))))
     (url-http-create-request)))
 
 (defun llama--process-filter (callback proc data)
