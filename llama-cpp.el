@@ -1,4 +1,4 @@
-;;; llama.el --- A client for llama-cpp server -*- lexical-binding: t; -*-
+;;; llama-cpp.el --- A client for llama-cpp server -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2023 Evgeny Kurnevsky <kurnevsky@gmail.com>
 
@@ -30,46 +30,46 @@
 (require 'url-http)
 (require 'dash)
 
-(defgroup llama nil
+(defgroup llama-cpp nil
   "Llama-cpp client."
   :group 'tools)
 
-(defcustom llama-host "localhost"
+(defcustom llama-cpp-host "localhost"
   "Host of the llama-cpp server."
   :type 'string
   :group 'llama)
 
-(defcustom llama-port 8080
+(defcustom llama-cpp-port 8080
   "Port of the llama-cpp server."
   :type 'natnum
   :group 'llama)
 
-(defcustom llama-params '(:n_predict -1 :mirostat 2)
+(defcustom llama-cpp-params '(:n_predict -1 :mirostat 2)
   "Parameters for the llama /completion request."
   :type '(alist :key-type (symbol :tag "Parameter")
                 :value-type (sexp :tag "Value"))
   :group 'llama)
 
-(defconst llama--process "llama")
-(defconst llama--process-buffer " *llama-output*")
-(defconst llama--rx (rx bol "data: " (group (+ nonl)) eol "\n"))
+(defconst llama-cpp--process "llama")
+(defconst llama-cpp--process-buffer " *llama-cpp-output*")
+(defconst llama-cpp--rx (rx bol "data: " (group (+ nonl)) eol "\n"))
 
-(defvar-local llama--start 0)
+(defvar-local llama-cpp--start 0)
 
-(defun llama-cancel ()
+(defun llama-cpp-cancel ()
   "Cancel the running llama process.
 It will terminate TCP connection and stop server computations."
   (interactive)
-  (when-let ((process (get-process llama--process)))
+  (when-let ((process (get-process llama-cpp--process)))
     (delete-process process))
-  (when-let ((buffer (get-buffer llama--process-buffer)))
+  (when-let ((buffer (get-buffer llama-cpp--process-buffer)))
     (kill-buffer buffer)))
 
-(defun llama--completion-url ()
+(defun llama-cpp--completion-url ()
   "Llama-cpp completion URL."
-  (format "http://%s:%d/completion" llama-host llama-port))
+  (format "http://%s:%d/completion" llama-cpp-host llama-cpp-port))
 
-(defun llama--request-body (prompt)
+(defun llama-cpp--request-body (prompt)
   "Llama-cpp POST request body for the PROMPT."
   (defvar url-http-method)
   (defvar url-http-proxy)
@@ -79,13 +79,13 @@ It will terminate TCP connection and stop server computations."
   (defvar url-http-data)
   (let ((url-http-method "POST")
         (url-http-proxy nil)
-        (url-http-target-url (url-generic-parse-url (llama--completion-url)))
+        (url-http-target-url (url-generic-parse-url (llama-cpp--completion-url)))
         (url-http-referer nil)
         (url-http-extra-headers `(("Content-Type" . "application/json")))
-        (url-http-data (json-serialize (append `(:prompt ,prompt :stream t) llama-params))))
+        (url-http-data (json-serialize (append `(:prompt ,prompt :stream t) llama-cpp-params))))
     (url-http-create-request)))
 
-(defun llama--process-filter (callback proc data)
+(defun llama-cpp--process-filter (callback proc data)
   "Llama process filter function.
 CALLBACK is called on each chunked response.
 PROC and DATA are the filter params."
@@ -99,31 +99,31 @@ PROC and DATA are the filter params."
             (set-marker mark (point))
             (let ((s (buffer-string)))
               (save-match-data
-                (while (string-match llama--rx s llama--start)
-                  (setq llama--start (1+ (match-end 0)))
+                (while (string-match llama-cpp--rx s llama-cpp--start)
+                  (setq llama-cpp--start (1+ (match-end 0)))
                   (let ((json (json-parse-string (substring s (match-beginning 1) (match-end 1)) :object-type 'plist)))
                     (funcall callback
                              (plist-get json :content)
                              (eq (plist-get json :stop) t))))))))))))
 
 ;;;###autoload
-(defun llama-complete (prompt callback)
+(defun llama-cpp-complete (prompt callback)
   "Complete the PROMPT using llama-cpp server.
 CALLBACK is called multiple times after a new token generated.
 
 It cancels the previous running llama generation if any."
-  (llama-cancel)
-  (let* ((buffer (get-buffer-create llama--process-buffer))
+  (llama-cpp-cancel)
+  (let* ((buffer (get-buffer-create llama-cpp--process-buffer))
          (process (make-network-process
-                   :name llama--process
+                   :name llama-cpp--process
                    :buffer buffer
-                   :host llama-host
-                   :service llama-port
-                   :filter (-partial #'llama--process-filter callback))))
-    (process-send-string process (llama--request-body prompt))))
+                   :host llama-cpp-host
+                   :service llama-cpp-port
+                   :filter (-partial #'llama-cpp--process-filter callback))))
+    (process-send-string process (llama-cpp--request-body prompt))))
 
-(provide 'llama)
-;;; llama.el ends here
+(provide 'llama-cpp)
+;;; llama-cpp.el ends here
 
 ;; Local Variables:
 ;; End:

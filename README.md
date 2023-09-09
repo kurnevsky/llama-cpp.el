@@ -19,47 +19,48 @@ buffer.
 To install this package, add it to your Emacs configuration:
 
 ```elisp
-(use-package llama
+(use-package llama-cpp
   :ensure t)
 ```
 
 Make sure to have [llama-cpp](https://github.com/ggerganov/llama-cpp) server
-running and accessible from the host specified in `llama-host` variable (default
+running and accessible from the host specified in `llama-cpp-host` variable (default
 is "localhost"). The server should be accessible via HTTP on the port specified
-in `llama-port` (default is 8080).
+in `llama-cpp-port` (default is 8080).
 
 ## Usage
 
-This package provides `llama-complete` as a public API for other packages to use.
+This package provides `llama-cpp-complete` as a public API for other packages to
+use.
 
-To cancel a running llama process, use `M-x llama-cancel`.
+To cancel a running llama process, use `M-x llama-cpp-cancel`.
 
 ### Chat
 
-You can start a Llama chat session using the command `M-x llama-chat-start`.
+You can start a Llama chat session using the command `M-x llama-cpp-chat-start`.
 
-To complete text from the llama buffer, use `M-x llama-chat-complete`.
+To complete text from the llama buffer, use `M-x llama-cpp-chat-complete`.
 
 ### Code
 
-`M-x llama-code-region-task` asks for a description of your task and then calls the
-llama to provide an answer. The task context is taken from the region you select
+`M-x llama-cpp-code-region-task` asks for a description of your task and then calls
+the llama to provide an answer. The task context is taken from the region you select
 when calling this function.
 
 ## Customization
 
 The following customization options are available:
 
-* `llama-host`: the host of the llama-cpp server (default is "localhost").
-* `llama-port`: the port of the llama-cpp server (default is 8080).
-* `llama-chat-prompt`: sets the chat prompt to start the chat with.
-* `llama-chat-input-prefix`: string to prefix user inputs with.
-* `llama-chat-input-suffix`: string to suffix after user inputs with.
-* `llama-code-lang-modes`: an alist mapping major modes to their language names.
-* `llama-code-region-prompt`: a prompt template for code region tasks.
+* `llama-cpp-host`: the host of the llama-cpp server (default is "localhost").
+* `llama-cpp-port`: the port of the llama-cpp server (default is 8080).
+* `llama-cpp-chat-prompt`: sets the chat prompt to start the chat with.
+* `llama-cpp-chat-input-prefix`: string to prefix user inputs with.
+* `llama-cpp-chat-input-suffix`: string to suffix after user inputs with.
+* `llama-cpp-code-lang-modes`: an alist mapping major modes to their language names.
+* `llama-cpp-code-region-prompt`: a prompt template for code region tasks.
 
 ## License
 
 This package is distributed under the GNU General Public License version 3 or
 later. Please refer to the
-[official repository](https://github.com/kurnevsky/llama.el) for more information.
+[official repository](https://github.com/kurnevsky/llama-cpp.el) for more information.

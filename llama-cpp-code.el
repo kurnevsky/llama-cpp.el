@@ -1,4 +1,4 @@
-;;; llama-code.el --- A client for llama-cpp server -*- lexical-binding: t; -*-
+;;; llama-cpp-code.el --- A client for llama-cpp server -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2023 Evgeny Kurnevsky <kurnevsky@gmail.com>
 
@@ -27,9 +27,9 @@
 ;;; Code:
 
 (require 'llama)
-(require 'llama-chat)
+(require 'llama-cpp-chat)
 
-(defcustom llama-code-lang-modes
+(defcustom llama-cpp-code-lang-modes
   '((tuareg-mode . "ocaml")
     (emacs-lisp-mode . "elisp")
     (artist-mode . "ditaa")
@@ -43,7 +43,7 @@
            (string "Language name")))
   :group 'llama)
 
-(defcustom llama-code-region-prompt "%s
+(defcustom llama-cpp-code-region-prompt "%s
 ```%s
 %s
 ```
@@ -51,31 +51,31 @@
   "Llama code task prompt."
   :type 'string)
 
-(defun llama-code-lang-to-mode (mode)
+(defun llama-cpp-code-lang-to-mode (mode)
   "Return text language for a major MODE."
   (or
-   (alist-get mode llama-code-lang-modes)
+   (alist-get mode llama-cpp-code-lang-modes)
    (string-remove-suffix "-mode" (string-remove-suffix "-ts-mode" (symbol-name mode)))))
 
 ;;;###autoload
-(defun llama-code-region-task (start end question)
+(defun llama-cpp-code-region-task (start end question)
   "Ask the llama to perform a task within the specified region.
 The task is defined by the text in the current buffer between START and END.
 The QUESTION argument is a string asking for clarification or more information
 about the task."
   (interactive "r\nsDescribe your task: ")
-  (llama-chat-start)
-  (let ((prompt (format llama-code-region-prompt
+  (llama-cpp-chat-start)
+  (let ((prompt (format llama-cpp-code-region-prompt
                         question
-                        (llama-code-lang-to-mode major-mode)
+                        (llama-cpp-code-lang-to-mode major-mode)
                         (buffer-substring-no-properties start end))))
-    (with-current-buffer (get-buffer-create llama-chat--buffer-name)
+    (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
       (insert prompt)
-      (llama-chat-insert-input-suffix)))
-  (llama-chat-complete))
+      (llama-cpp-chat-insert-input-suffix)))
+  (llama-cpp-chat-complete))
 
-(provide 'llama-code)
-;;; llama-code.el ends here
+(provide 'llama-cpp-code)
+;;; llama-cpp-code.el ends here
 
 ;; Local Variables:
 ;; End:
