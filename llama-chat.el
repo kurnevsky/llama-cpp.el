@@ -45,18 +45,24 @@
 
 (defcustom llama-chat-prompt "### System Prompt
 You are an intelligent programming assistant."
-  "Llama prompt to start chat with.")
+  "Llama prompt to start chat with."
+  :type 'string
+  :group 'llama)
 
 (defcustom llama-chat-input-prefix "
 
 ### User Message
 "
-  "String to prefix user inputs with.")
+  "String to prefix user inputs with."
+  :type 'string
+  :group 'llama)
 
 (defcustom llama-chat-input-suffix "
 ### Assistant
 "
-  "String to suffix after user inputs with.")
+  "String to suffix after user inputs with."
+  :type 'string
+  :group 'llama)
 
 (defconst llama-chat--buffer-name "*llama*")
 
