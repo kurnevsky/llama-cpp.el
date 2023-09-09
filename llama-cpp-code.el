@@ -26,7 +26,7 @@
 
 ;;; Code:
 
-(require 'llama)
+(require 'llama-cpp)
 (require 'llama-cpp-chat)
 
 (defcustom llama-cpp-code-lang-modes

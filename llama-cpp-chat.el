@@ -26,7 +26,7 @@
 
 ;;; Code:
 
-(require 'llama)
+(require 'llama-cpp)
 
 (defface llama-cpp-chat-prompt-face
   '((t :inherit font-lock-comment-face))
