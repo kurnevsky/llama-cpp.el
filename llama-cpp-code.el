@@ -2,11 +2,6 @@
 
 ;; Copyright (C) 2023 Evgeny Kurnevsky <kurnevsky@gmail.com>
 
-;; Version: 1.0.0
-;; Author: Evgeny Kurnevsky <kurnevsky@gmail.com>
-;; Keywords: llama, llm, ai
-;; URL: https://github.com/kurnevsky/llama.el
-
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
@@ -48,7 +43,8 @@
 %s
 ```"
   "Llama code task prompt."
-  :type 'string)
+  :type 'string
+  :group 'llama)
 
 (defun llama-cpp-code-lang-to-mode (mode)
   "Return text language for a major MODE."

@@ -3,9 +3,9 @@
 ;; Copyright (C) 2023 Evgeny Kurnevsky <kurnevsky@gmail.com>
 
 ;; Version: 1.0.0
-;; Package-Requires: ((emacs "27.1") (dash "2.19"))
+;; Package-Requires: ((emacs "27.1") (dash "2.19.1"))
 ;; Author: Evgeny Kurnevsky <kurnevsky@gmail.com>
-;; Keywords: llama, llm, ai
+;; Keywords: tools
 ;; URL: https://github.com/kurnevsky/llama.el
 
 ;; This program is free software; you can redistribute it and/or modify
