@@ -58,6 +58,7 @@ You are an intelligent programming assistant."
   :group 'llama)
 
 (defcustom llama-cpp-chat-input-suffix "
+
 ### Assistant
 "
   "String to suffix after user inputs with."
@@ -97,7 +98,7 @@ into the buffer."
   (display-buffer llama-cpp-chat--buffer-name))
 
 (defun llama-cpp-chat-complete ()
-  "Complete text from llama buffer."
+  "Complete text from the llama buffer."
   (interactive)
   (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
     (llama-cpp-complete (buffer-string) (lambda (token stop)
@@ -107,6 +108,19 @@ into the buffer."
                                           (insert token)
                                           (when stop
                                             (llama-cpp-chat-insert-input-prefix))))))))
+
+(defun llama-cpp-chat-answer ()
+  "Continue the chat session in the llama buffer.
+
+This function is intended for use during an active chat session with the
+llama.  It appends a predefined input suffix to the end of the current buffer
+and then proceeds to complete the chat session."
+  (interactive)
+  (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
+    (save-excursion
+      (goto-char (point-max))
+      (llama-cpp-chat-insert-input-suffix)))
+  (llama-cpp-chat-complete))
 
 (provide 'llama-cpp-chat)
 ;;; llama-cpp-chat.el ends here

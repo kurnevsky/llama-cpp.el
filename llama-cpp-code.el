@@ -46,8 +46,7 @@
 (defcustom llama-cpp-code-region-prompt "%s
 ```%s
 %s
-```
-"
+```"
   "Llama code task prompt."
   :type 'string)
 

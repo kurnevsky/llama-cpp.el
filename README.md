@@ -39,6 +39,9 @@ To cancel a running llama process, use `M-x llama-cpp-cancel`.
 
 You can start a Llama chat session using the command `M-x llama-cpp-chat-start`.
 
+After providing the necessary input, you can execute `M-x llama-cpp-chat-answer`
+to request a response from Llama.
+
 To complete text from the llama buffer, use `M-x llama-cpp-chat-complete`.
 
 ### Code
