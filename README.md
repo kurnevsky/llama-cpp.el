@@ -23,7 +23,7 @@ To install this package, add it to your Emacs configuration:
   :ensure t)
 ```
 
-Make sure to have [llama-cpp](https://github.com/ggerganov/llama-cpp) server
+Make sure to have [llama-cpp](https://github.com/ggerganov/llama.cpp) server
 running and accessible from the host specified in `llama-cpp-host` variable (default
 is "localhost"). The server should be accessible via HTTP on the port specified
 in `llama-cpp-port` (default is 8080).
