@@ -45,7 +45,7 @@
   :type 'natnum
   :group 'llama)
 
-(defcustom llama-cpp-params '(:n_predict -1 :mirostat 2)
+(defcustom llama-cpp-params '(:n_predict -1)
   "Parameters for the llama-cpp /completion request."
   :type '(alist :key-type (symbol :tag "Parameter")
                 :value-type (sexp :tag "Value"))
