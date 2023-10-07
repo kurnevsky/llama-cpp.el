@@ -3,9 +3,10 @@
 *The readme is mostly written by CodeLLama.* :satisfied:
 
 Llama package for Emacs provides a client for the
-[llama-cpp](https://github.com/ggerganov/llama.cpp) server. It allows you to ask
-llama for code completion and perform tasks within specified regions of the
-buffer.
+[llama-cpp](https://github.com/ggerganov/llama.cpp)
+[server](https://github.com/ggerganov/llama.cpp/tree/master/examples/server).
+It allows you to ask llama for code completion and perform tasks within
+specified regions of the buffer.
 
 ## Table of Contents
 
@@ -24,7 +25,8 @@ To install this package, add it to your Emacs configuration:
   :ensure t)
 ```
 
-Make sure to have [llama-cpp](https://github.com/ggerganov/llama.cpp) server
+Make sure to have [llama-cpp](https://github.com/ggerganov/llama.cpp)
+[server](https://github.com/ggerganov/llama.cpp/tree/master/examples/server)
 running and accessible from the host specified in `llama-cpp-host` variable (default
 is "localhost"). The server should be accessible via HTTP on the port specified
 in `llama-cpp-port` (default is 8080).
