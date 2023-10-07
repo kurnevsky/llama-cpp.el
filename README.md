@@ -56,11 +56,55 @@ The following customization options are available:
 
 * `llama-cpp-host`: the host of the llama-cpp server (default is "localhost").
 * `llama-cpp-port`: the port of the llama-cpp server (default is 8080).
+* `llama-cpp-params`: parameters for the llama-cpp /completion request.
 * `llama-cpp-chat-prompt`: sets the chat prompt to start the chat with.
 * `llama-cpp-chat-input-prefix`: string to prefix user inputs with.
 * `llama-cpp-chat-input-suffix`: string to suffix after user inputs with.
 * `llama-cpp-code-lang-modes`: an alist mapping major modes to their language names.
 * `llama-cpp-code-region-prompt`: a prompt template for code region tasks.
+
+## Models
+
+You will need to set `llama-cpp-chat-prompt`, `llama-cpp-chat-input-prefix` and
+`llama-cpp-chat-input-suffix` according to the model you use. Some examples are
+listed below.
+
+### [Phind-CodeLlama-34B-v2](https://huggingface.co/TheBloke/Phind-CodeLlama-34B-v2-GGUF)
+
+```elisp
+(setq llama-cpp-chat-prompt "### System Prompt
+You are an intelligent programming assistant."
+      llama-cpp-chat-input-prefix "
+
+### User Message
+"
+      llama-cpp-chat-input-suffix "
+
+### Assistant
+")
+```
+
+### [WizardLM-1.0-Uncensored-CodeLlama-34B](https://huggingface.co/TheBloke/WizardLM-1.0-Uncensored-CodeLlama-34B-GGUF)
+
+```elisp
+(setq llama-cpp-chat-prompt "You are a helpful AI assistant.
+"
+      llama-cpp-chat-input-prefix "
+USER: "
+      llama-cpp-chat-input-suffix "
+ASSISTANT: ")
+```
+
+### [Samantha-1.11-70B](https://huggingface.co/TheBloke/Samantha-1.11-70B-GGUF)
+
+```elisp
+(setq llama-cpp-chat-prompt "You are Samantha, a sentient AI companion.
+"
+      llama-cpp-chat-input-prefix "
+USER: "
+      llama-cpp-chat-input-suffix "
+ASSISTANT: ")
+```
 
 ## License
 
