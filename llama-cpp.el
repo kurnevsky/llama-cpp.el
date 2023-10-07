@@ -82,8 +82,10 @@ It will terminate TCP connection and stop server computations."
         (url-http-proxy nil)
         (url-http-target-url (url-generic-parse-url (llama-cpp--completion-url)))
         (url-http-referer nil)
-        (url-http-extra-headers `(("Content-Type" . "application/json")))
-        (url-http-data (json-serialize (append `(:prompt ,prompt :stream t) llama-cpp-params))))
+        (url-http-extra-headers `(("Content-Type" . "application/json; charset=utf-8")))
+        (url-http-data
+         (encode-coding-string
+          (json-serialize (append `(:prompt ,prompt :stream t) llama-cpp-params)) 'utf-8 t)))
     (url-http-create-request)))
 
 (defun llama-cpp--process-filter (callback proc data)
