@@ -12,7 +12,8 @@ buffer.
 1. [Installation](#installation)
 2. [Usage](#usage)
 3. [Customization](#customization)
-4. [License](#license)
+4. [Models](#models)
+5. [License](#license)
 
 ## Installation
 
