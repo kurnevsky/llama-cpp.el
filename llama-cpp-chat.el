@@ -90,7 +90,8 @@ into the buffer."
     (erase-buffer)
     (llama-cpp-chat-insert-prompt)
     (llama-cpp-chat-insert-input-prefix))
-  (display-buffer llama-cpp-chat--buffer-name))
+  (pop-to-buffer llama-cpp-chat--buffer-name)
+  (goto-char (point-max)))
 
 (defun llama-cpp-chat-complete ()
   "Complete text from the llama buffer."
@@ -100,9 +101,10 @@ into the buffer."
                                       (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
                                         (save-excursion
                                           (goto-char (point-max))
-                                          (insert token)
-                                          (when stop
-                                            (llama-cpp-chat-insert-input-prefix))))))))
+                                          (insert token))
+                                        (when stop
+                                          (goto-char (point-max))
+                                          (llama-cpp-chat-insert-input-prefix)))))))
 
 (defun llama-cpp-chat-answer ()
   "Continue the chat session in the llama buffer.
@@ -122,4 +124,3 @@ and then proceeds to complete the chat session."
 
 ;; Local Variables:
 ;; End:
-
