@@ -59,14 +59,13 @@ The task is defined by the text in the current buffer between START and END.
 The QUESTION argument is a string asking for clarification or more information
 about the task."
   (interactive "r\nsDescribe your task: ")
-  (llama-cpp-chat-start)
   (let ((prompt (format llama-cpp-code-region-prompt
                         question
                         (llama-cpp-code-lang-to-mode major-mode)
                         (buffer-substring-no-properties start end))))
-    (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
-      (insert prompt)
-      (llama-cpp-chat-insert-input-suffix)))
+    (llama-cpp-chat-start)
+    (insert prompt)
+    (llama-cpp-chat-insert-input-suffix))
   (llama-cpp-chat-complete))
 
 (provide 'llama-cpp-code)
