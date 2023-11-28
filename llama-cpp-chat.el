@@ -38,23 +38,21 @@
   "Face used for the input suffix."
   :group 'llama)
 
-(defcustom llama-cpp-chat-prompt "### System Prompt
-You are an intelligent programming assistant."
+(defcustom llama-cpp-chat-prompt "<|im_start|>system
+You are a helpful AI assistant."
   "Llama prompt to start chat with."
   :type 'string
   :group 'llama)
 
-(defcustom llama-cpp-chat-input-prefix "
-
-### User Message
+(defcustom llama-cpp-chat-input-prefix "<|im_end|>
+<|im_start|>user
 "
   "String to prefix user inputs with."
   :type 'string
   :group 'llama)
 
-(defcustom llama-cpp-chat-input-suffix "
-
-### Assistant
+(defcustom llama-cpp-chat-input-suffix "<|im_end|>
+<|im_start|>assistant
 "
   "String to suffix after user inputs with."
   :type 'string

@@ -72,6 +72,19 @@ You will need to set `llama-cpp-chat-prompt`, `llama-cpp-chat-input-prefix` and
 `llama-cpp-chat-input-suffix` according to the model you use. Some examples are
 listed below.
 
+### [dolphin-2.2.1-mistral-7B](https://huggingface.co/TheBloke/dolphin-2.2.1-mistral-7B-GGUF)
+
+```elisp
+(setq llama-cpp-chat-prompt "<|im_start|>system
+You are Dolphin, a helpful AI assistant."
+      llama-cpp-chat-input-prefix "<|im_end|>
+<|im_start|>user
+"
+      llama-cpp-chat-input-suffix "<|im_end|>
+<|im_start|>assistant
+")
+```
+
 ### [Phind-CodeLlama-34B-v2](https://huggingface.co/TheBloke/Phind-CodeLlama-34B-v2-GGUF)
 
 ```elisp
