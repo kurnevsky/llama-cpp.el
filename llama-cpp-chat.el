@@ -38,8 +38,34 @@
   "Face used for the input suffix."
   :group 'llama)
 
-(defcustom llama-cpp-chat-prompt "<|im_start|>system
-You are a helpful AI assistant."
+(defcustom llama-cpp-chat-prompt-message "You are a helpful AI assistant."
+  "Llama prompt to start chat with."
+  :type 'string
+  :group 'llama)
+
+(defcustom llama-cpp-chat-prompt-display llama-cpp-chat-prompt-message
+  "Display property for the prompt."
+  :type '(choice
+          (const :tag "Display as is" nil)
+          (string :tag "Display as string"))
+  :group 'llama)
+
+(defcustom llama-cpp-chat-input-prefix-display "\n> "
+  "Display property for the input prefix."
+  :type '(choice
+          (const :tag "Display as is" nil)
+          (string :tag "Display as string"))
+  :group 'llama)
+
+(defcustom llama-cpp-chat-input-suffix-display "\n>> "
+  "Display property for the input suffix."
+  :type '(choice
+          (const :tag "Display as is" nil)
+          (string :tag "Display as string"))
+  :group 'llama)
+
+(defcustom llama-cpp-chat-prompt (concat "<|im_start|>system
+" llama-cpp-chat-prompt-message)
   "Llama prompt to start chat with."
   :type 'string
   :group 'llama)
@@ -62,19 +88,19 @@ You are a helpful AI assistant."
 
 (defun llama-cpp-chat-insert-prompt ()
   "Insert chat prompt at point."
-  (insert (propertize llama-cpp-chat-prompt 'face 'llama-cpp-chat-prompt-face)))
+  (insert (propertize llama-cpp-chat-prompt 'face 'llama-cpp-chat-prompt-face 'display llama-cpp-chat-prompt-display)))
 
 (defun llama-cpp-chat-insert-input-prefix ()
   "Insert the input prefix at point."
-  (insert (propertize llama-cpp-chat-input-prefix 'face 'llama-cpp-chat-input-prefix-face))
+  (insert (propertize llama-cpp-chat-input-prefix 'face 'llama-cpp-chat-input-prefix-face 'display llama-cpp-chat-input-prefix-display))
   (unless (string-empty-p llama-cpp-chat-input-prefix)
-    (set-text-properties (1- (point)) (point) nil)))
+    (set-text-properties (1- (point)) (point) `(display ,llama-cpp-chat-input-prefix-display))))
 
 (defun llama-cpp-chat-insert-input-suffix ()
   "Insert the input suffix at point."
-  (insert (propertize llama-cpp-chat-input-suffix 'face 'llama-cpp-chat-input-suffix-face))
+  (insert (propertize llama-cpp-chat-input-suffix 'face 'llama-cpp-chat-input-suffix-face 'display llama-cpp-chat-input-suffix-display))
   (unless (string-empty-p llama-cpp-chat-input-suffix)
-    (set-text-properties (1- (point)) (point) nil)))
+    (set-text-properties (1- (point)) (point) `(display ,llama-cpp-chat-input-suffix-display))))
 
 ;;;###autoload
 (defun llama-cpp-chat-start ()
