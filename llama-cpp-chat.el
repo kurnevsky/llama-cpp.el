@@ -88,19 +88,27 @@
 
 (defun llama-cpp-chat-insert-prompt ()
   "Insert chat prompt at point."
-  (insert (propertize llama-cpp-chat-prompt 'face 'llama-cpp-chat-prompt-face 'display llama-cpp-chat-prompt-display)))
+  (insert (propertize llama-cpp-chat-prompt
+                      'face 'llama-cpp-chat-prompt-face
+                      'display llama-cpp-chat-prompt-display
+                      'read-only t
+                      'rear-nonsticky t)))
 
 (defun llama-cpp-chat-insert-input-prefix ()
   "Insert the input prefix at point."
-  (insert (propertize llama-cpp-chat-input-prefix 'face 'llama-cpp-chat-input-prefix-face 'display llama-cpp-chat-input-prefix-display))
-  (unless (string-empty-p llama-cpp-chat-input-prefix)
-    (set-text-properties (1- (point)) (point) `(display ,llama-cpp-chat-input-prefix-display))))
+  (insert (propertize llama-cpp-chat-input-prefix
+                      'face 'llama-cpp-chat-input-prefix-face
+                      'display llama-cpp-chat-input-prefix-display
+                      'read-only t
+                      'rear-nonsticky t)))
 
 (defun llama-cpp-chat-insert-input-suffix ()
   "Insert the input suffix at point."
-  (insert (propertize llama-cpp-chat-input-suffix 'face 'llama-cpp-chat-input-suffix-face 'display llama-cpp-chat-input-suffix-display))
-  (unless (string-empty-p llama-cpp-chat-input-suffix)
-    (set-text-properties (1- (point)) (point) `(display ,llama-cpp-chat-input-suffix-display))))
+  (insert (propertize llama-cpp-chat-input-suffix
+                      'face 'llama-cpp-chat-input-suffix-face
+                      'display llama-cpp-chat-input-suffix-display
+                      'read-only t
+                      'rear-nonsticky t)))
 
 ;;;###autoload
 (defun llama-cpp-chat-start ()
@@ -111,9 +119,10 @@ session.  A prompt message for the Llama chat and an input prefix are inserted
 into the buffer."
   (interactive)
   (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
-    (erase-buffer)
-    (llama-cpp-chat-insert-prompt)
-    (llama-cpp-chat-insert-input-prefix))
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (llama-cpp-chat-insert-prompt)
+      (llama-cpp-chat-insert-input-prefix)))
   (pop-to-buffer llama-cpp-chat--buffer-name)
   (goto-char (point-max)))
 
