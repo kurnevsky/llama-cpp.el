@@ -156,8 +156,8 @@ and then proceeds to complete the chat session."
 (define-minor-mode llama-cpp-chat-mode
   "Toggle llama-cpp chat mode."
   :lighter "llama-cpp"
-  :keymap `((,(kbd "RET") . llama-cpp-chat-answer)
-            (,(kbd "C-RET") . newline)))
+  :keymap `((,(kbd "<return>") . llama-cpp-chat-answer)
+            (,(kbd "C-<return>") . newline)))
 
 (provide 'llama-cpp-chat)
 ;;; llama-cpp-chat.el ends here
