@@ -124,7 +124,8 @@ into the buffer."
       (llama-cpp-chat-insert-prompt)
       (llama-cpp-chat-insert-input-prefix)))
   (pop-to-buffer llama-cpp-chat--buffer-name)
-  (goto-char (point-max)))
+  (goto-char (point-max))
+  (llama-cpp-chat-mode t))
 
 (defun llama-cpp-chat-complete ()
   "Complete text from the llama buffer."
@@ -151,6 +152,12 @@ and then proceeds to complete the chat session."
       (goto-char (point-max))
       (llama-cpp-chat-insert-input-suffix)))
   (llama-cpp-chat-complete))
+
+(define-minor-mode llama-cpp-chat-mode
+  "Toggle llama-cpp chat mode."
+  :lighter "llama-cpp"
+  :keymap `((,(kbd "RET") . llama-cpp-chat-answer)
+            (,(kbd "C-RET") . newline)))
 
 (provide 'llama-cpp-chat)
 ;;; llama-cpp-chat.el ends here
