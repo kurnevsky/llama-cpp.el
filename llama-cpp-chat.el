@@ -38,18 +38,6 @@
   "Face used for the input suffix."
   :group 'llama)
 
-(defcustom llama-cpp-chat-prompt-message "You are a helpful AI assistant."
-  "Llama prompt to start chat with."
-  :type 'string
-  :group 'llama)
-
-(defcustom llama-cpp-chat-prompt-display llama-cpp-chat-prompt-message
-  "Display property for the prompt."
-  :type '(choice
-          (const :tag "Display as is" nil)
-          (string :tag "Display as string"))
-  :group 'llama)
-
 (defcustom llama-cpp-chat-input-prefix-display "\n> "
   "Display property for the input prefix."
   :type '(choice
@@ -64,8 +52,18 @@
           (string :tag "Display as string"))
   :group 'llama)
 
-(defcustom llama-cpp-chat-prompt (concat "<|im_start|>system
-" llama-cpp-chat-prompt-message)
+(defcustom llama-cpp-chat-prompt-prefix "<|im_start|>system
+"
+  "Llama prompt prefix."
+  :type 'string
+  :group 'llama)
+
+(defcustom llama-cpp-chat-prompt-prefix-display ""
+  "Display property for the prompt prefix."
+  :type 'string
+  :group 'llama)
+
+(defcustom llama-cpp-chat-prompt "You are a helpful AI assistant."
   "Llama prompt to start chat with."
   :type 'string
   :group 'llama)
@@ -88,11 +86,14 @@
 
 (defun llama-cpp-chat-insert-prompt ()
   "Insert chat prompt at point."
+  (insert (propertize llama-cpp-chat-prompt-prefix
+                      'face 'llama-cpp-chat-prompt-face
+                      'display llama-cpp-chat-prompt-prefix-display
+                      'read-only t
+                      'rear-nonsticky t))
   (insert (propertize llama-cpp-chat-prompt
                       'face 'llama-cpp-chat-prompt-face
-                      'display llama-cpp-chat-prompt-display
-                      'read-only t
-                      'rear-nonsticky t)))
+                      'front-sticky t)))
 
 (defun llama-cpp-chat-insert-input-prefix ()
   "Insert the input prefix at point."
