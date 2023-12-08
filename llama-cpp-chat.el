@@ -158,7 +158,7 @@ and then proceeds to complete the chat session."
   "Toggle llama-cpp chat mode."
   :lighter "llama-cpp"
   :keymap `((,(kbd "<return>") . llama-cpp-chat-answer)
-            (,(kbd "C-<return>") . newline)))
+            (,(kbd "S-<return>") . newline)))
 
 (provide 'llama-cpp-chat)
 ;;; llama-cpp-chat.el ends here
