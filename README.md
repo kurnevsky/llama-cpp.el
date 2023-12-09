@@ -68,15 +68,15 @@ The following customization options are available:
 
 ## Models
 
-You will need to set `llama-cpp-chat-prompt`, `llama-cpp-chat-input-prefix` and
-`llama-cpp-chat-input-suffix` according to the model you use. Some examples are
+You will need to set `llama-cpp-chat-prompt-prefix`, `llama-cpp-chat-input-prefix`
+and `llama-cpp-chat-input-suffix` according to the model you use. Some examples are
 listed below.
 
 ### [dolphin-2.2.1-mistral-7B](https://huggingface.co/TheBloke/dolphin-2.2.1-mistral-7B-GGUF)
 
 ```elisp
-(setq llama-cpp-chat-prompt "<|im_start|>system
-You are Dolphin, a helpful AI assistant."
+(setq llama-cpp-chat-prompt-prefix "<|im_start|>system
+"
       llama-cpp-chat-input-prefix "<|im_end|>
 <|im_start|>user
 "
@@ -88,8 +88,8 @@ You are Dolphin, a helpful AI assistant."
 ### [Phind-CodeLlama-34B-v2](https://huggingface.co/TheBloke/Phind-CodeLlama-34B-v2-GGUF)
 
 ```elisp
-(setq llama-cpp-chat-prompt "### System Prompt
-You are an intelligent programming assistant."
+(setq llama-cpp-chat-prompt-prefix "### System Prompt
+"
       llama-cpp-chat-input-prefix "
 
 ### User Message
@@ -103,8 +103,7 @@ You are an intelligent programming assistant."
 ### [WizardLM-1.0-Uncensored-CodeLlama-34B](https://huggingface.co/TheBloke/WizardLM-1.0-Uncensored-CodeLlama-34B-GGUF)
 
 ```elisp
-(setq llama-cpp-chat-prompt "You are a helpful AI assistant.
-"
+(setq llama-cpp-chat-prompt-prefix ""
       llama-cpp-chat-input-prefix "
 USER: "
       llama-cpp-chat-input-suffix "
@@ -114,8 +113,7 @@ ASSISTANT: ")
 ### [Samantha-1.11-70B](https://huggingface.co/TheBloke/Samantha-1.11-70B-GGUF)
 
 ```elisp
-(setq llama-cpp-chat-prompt "You are Samantha, a sentient AI companion.
-"
+(setq llama-cpp-chat-prompt ""
       llama-cpp-chat-input-prefix "
 USER: "
       llama-cpp-chat-input-suffix "
