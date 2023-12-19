@@ -82,6 +82,11 @@
   :type 'string
   :group 'llama)
 
+(defcustom llama-cpp-highlight-probabilities nil
+  "Whether to highlight probabilities of tokens with color."
+  :type 'boolean
+  :group 'llama)
+
 (defconst llama-cpp-chat--buffer-name "*llama*")
 
 (defun llama-cpp-chat-insert-prompt ()
@@ -128,17 +133,34 @@ into the buffer."
   (goto-char (point-max))
   (llama-cpp-chat-mode t))
 
+(defun llama-cpp-probability-color (probability)
+  "Return a color for the token PROBABILITY."
+  (let ((c (* probability 255)))
+    (format "#%02X%02X%02X" c c 255)))
+
 (defun llama-cpp-chat-complete ()
   "Complete text from the llama buffer."
   (interactive)
   (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
     (llama-cpp-complete (buffer-string) (lambda (json)
-                                          (let ((content (plist-get json :content))
-                                                (stop (eq (plist-get json :stop) t)))
+                                          (let* ((content (plist-get json :content))
+                                                 (stop (eq (plist-get json :stop) t))
+                                                 (completion-probabilities (plist-get json :completion_probabilities))
+                                                 (probs (-some (lambda (item) (when (string= (plist-get item :content) content)
+                                                                                (plist-get item :probs)))
+                                                               (append completion-probabilities nil)))
+                                                 (probability (-some (lambda (item)
+                                                                       (when (string= (plist-get item :tok_str) content)
+                                                                         (plist-get item :prob)))
+                                                                     (append probs nil))))
                                             (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
                                               (save-excursion
                                                 (goto-char (point-max))
-                                                (insert content))
+                                                (insert (if llama-cpp-highlight-probabilities
+                                                            (propertize content
+                                                                        'face `(foreground-color . ,(llama-cpp-probability-color (or probability 0)))
+                                                                        'rear-nonsticky t)
+                                                          content)))
                                               (when stop
                                                 (goto-char (point-max))
                                                 (llama-cpp-chat-insert-input-prefix))))))))
