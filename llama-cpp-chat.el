@@ -132,14 +132,16 @@ into the buffer."
   "Complete text from the llama buffer."
   (interactive)
   (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
-    (llama-cpp-complete (buffer-string) (lambda (token stop)
-                                      (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
-                                        (save-excursion
-                                          (goto-char (point-max))
-                                          (insert token))
-                                        (when stop
-                                          (goto-char (point-max))
-                                          (llama-cpp-chat-insert-input-prefix)))))))
+    (llama-cpp-complete (buffer-string) (lambda (json)
+                                          (let ((content (plist-get json :content))
+                                                (stop (eq (plist-get json :stop) t)))
+                                            (with-current-buffer (get-buffer-create llama-cpp-chat--buffer-name)
+                                              (save-excursion
+                                                (goto-char (point-max))
+                                                (insert content))
+                                              (when stop
+                                                (goto-char (point-max))
+                                                (llama-cpp-chat-insert-input-prefix))))))))
 
 (defun llama-cpp-chat-answer ()
   "Continue the chat session in the llama buffer.
