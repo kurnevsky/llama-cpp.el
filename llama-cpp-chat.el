@@ -22,6 +22,7 @@
 ;;; Code:
 
 (require 'llama-cpp)
+(require 'llama-cpp-template)
 
 (defface llama-cpp-chat-prompt-face
   '((t :inherit font-lock-comment-face))
@@ -52,12 +53,6 @@
           (string :tag "Display as string"))
   :group 'llama)
 
-(defcustom llama-cpp-chat-prompt-prefix "<|im_start|>system
-"
-  "Llama prompt prefix."
-  :type 'string
-  :group 'llama)
-
 (defcustom llama-cpp-chat-prompt-prefix-display ""
   "Display property for the prompt prefix."
   :type 'string
@@ -68,37 +63,28 @@
   :type 'string
   :group 'llama)
 
-(defcustom llama-cpp-chat-input-prefix "<|im_end|>
-<|im_start|>user
-"
-  "String to prefix user inputs with."
-  :type 'string
-  :group 'llama)
-
-(defcustom llama-cpp-chat-input-suffix "<|im_end|>
-<|im_start|>assistant
-"
-  "String to suffix after user inputs with."
-  :type 'string
-  :group 'llama)
-
 (defcustom llama-cpp-highlight-probabilities nil
   "Whether to highlight probabilities of tokens with color."
   :type 'boolean
   :group 'llama)
 
+(defvaralias 'llama-cpp-chat-prompt-prefix 'llama-cpp-template-prompt-prefix)
+(defvaralias 'llama-cpp-chat-input-prefix 'llama-cpp-template-input-prefix)
+(defvaralias 'llama-cpp-chat-input-suffix 'llama-cpp-template-input-suffix)
+
 (defconst llama-cpp-chat--buffer-name "*llama*")
 
 (defun llama-cpp-chat-insert-prompt ()
   "Insert chat prompt at point."
-  (insert (propertize llama-cpp-chat-prompt-prefix
-                      'face 'llama-cpp-chat-prompt-face
-                      'display llama-cpp-chat-prompt-prefix-display
-                      'read-only t
-                      'rear-nonsticky t))
-  (insert (propertize llama-cpp-chat-prompt
-                      'face 'llama-cpp-chat-prompt-face
-                      'front-sticky t)))
+  (when llama-cpp-chat-prompt-prefix
+    (insert (propertize llama-cpp-chat-prompt-prefix
+                        'face 'llama-cpp-chat-prompt-face
+                        'display llama-cpp-chat-prompt-prefix-display
+                        'read-only t
+                        'rear-nonsticky t))
+    (insert (propertize llama-cpp-chat-prompt
+                        'face 'llama-cpp-chat-prompt-face
+                        'front-sticky t))))
 
 (defun llama-cpp-chat-insert-input-prefix ()
   "Insert the input prefix at point."
